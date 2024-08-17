@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Chat App</title>
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <script defer src="script.js"></script>
+  <style>
+    :root {
+      --primary-color: #007bff;
+      --background-color: #f8f9fa;
+      --text-color: #212529;
+      --input-bg-color: #fff;
+      --input-text-color: #000;
+      --button-bg-color: #007bff;
+      --button-text-color: #fff;
+      --message-bg-color: #CCC;
+      --message-alt-bg-color: #FFF;
+    }
+
+    [data-theme="dark"] {
+      --background-color: #121212;
+      --text-color: #e0e0e0;
+      --input-bg-color: #333;
+      --input-text-color: #e0e0e0;
+      --button-bg-color: #1f1f1f;
+      --button-text-color: #fff;
+      --message-bg-color: #444;
+      --message-alt-bg-color: #333;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #message-container {
+      width: 80%;
+      max-width: 600px;
+      margin-bottom: 100px;
+    }
+
+    #message-container div {
+      background-color: var(--message-bg-color);
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    #message-container div:nth-child(2n) {
+      background-color: var(--message-alt-bg-color);
+    }
+
+    #send-container {
+      display: flex;
+      justify-content: space-evenly;
+      position: fixed;
+      bottom: 0;
+      background-color: var(--background-color);
+      max-width: 600px;
+      width: 80%;
+      display: flex;
+      padding: 15px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
+    }
+
+    #message-input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: var(--input-bg-color);
+      color: var(--input-text-color);
+      margin-right: 10px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #send-button {
+      background-color: var(--button-bg-color);
+      color: var(--button-text-color);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #send-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: var(--button-bg-color);
+      color: var(--button-text-color);
+      border: none;
+      padding: 10px;
+      border-radius:  40px   40px 999em 999em;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <button class="theme-toggle">🌙</button>
+  <div id="message-container"></div>
+  <form id="send-container">
+    <input placeholder="Enter Message ..." type="text" id="message-input" />
+    <button type="submit" id="send-button">Send</button>
+  </form>
+  <script>
+    const msginput = document.getElementById('message-input');
+    document.getElementById('send-button').disabled = msginput.value.trim() === "";
+    msginput.addEventListener('input', () => {
+      document.getElementById('send-button').disabled = msginput.value.trim() === "";
+    });
+
+    const themeToggle = document.querySelector('.theme-toggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', newTheme);
+      themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
+    });
+  </script>
+</body>
+</html>

@@ -23,3 +23,6 @@ io.on('connection', socket => {
     delete users[socket.id]
   })
 })
+
+const http = require('http').createServer();
+http.listen(3000, '0.0.0.0');
